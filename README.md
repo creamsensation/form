@@ -48,7 +48,7 @@ formBuilder.Get(name)
 ### FormBuilder - Limit()
 Data limit (MBs)
 ```go
-formBuilder.Get(name)
+formBuilder.Limit(limit)
 ```
 
 ### FormBuilder - Method()
