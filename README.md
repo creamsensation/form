@@ -15,7 +15,7 @@ type ExampleForm struct {
 func createExampleForm() (ExampleForm, error) {
   form := New(
     Add("name").With(Text(), Validate.Required()),
-    Add("name").With(Number[int](), Validate.Required()),
+    Add("age").With(Number[int](), Validate.Required()),
   )
   return Build[ExampleForm](form)
 }
