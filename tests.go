@@ -35,6 +35,7 @@ const (
 	testQuantityValue = 5
 	testAmountValue   = 999.99
 	testCheckedValue  = true
+	testRole          = "owner"
 )
 
 func testGetRequest() *http.Request {
@@ -53,8 +54,8 @@ func testCreateFormRequest() *http.Request {
 		"/test",
 		strings.NewReader(
 			fmt.Sprintf(
-				"name=%s&quantity=%d&amount=%.2f&checked=%t",
-				testNameValue, testQuantityValue, testAmountValue, testCheckedValue,
+				"name=%s&quantity=%d&amount=%.2f&checked=%t&roles=%s",
+				testNameValue, testQuantityValue, testAmountValue, testCheckedValue, testRole,
 			),
 		),
 	)

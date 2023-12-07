@@ -5,7 +5,9 @@ type Field[T any] struct {
 	DataType string
 	Id       string
 	Name     string
+	Label    string
 	Value    T
 	Errors   []error
+	Required bool
 	Multiple bool
 }

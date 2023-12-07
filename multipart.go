@@ -5,5 +5,5 @@ type Multipart struct {
 	Name   string `json:"name"`
 	Type   string `json:"type"`
 	Suffix string `json:"suffix"`
-	Bytes  []byte `json:"bytes"`
+	Data   []byte `json:"data"`
 }

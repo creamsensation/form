@@ -66,4 +66,16 @@ func TestValidator(t *testing.T) {
 			assert.Equal(t, validatorErrorStringMax, form.Email.Errors[0])
 		},
 	)
+	t.Run(
+		"string slice", func(t *testing.T) {
+			form, err := Build[testForm](
+				New(
+					Add("roles").Multiple().With(Text(), Validate.Required()),
+				),
+			)
+			assert.Nil(t, err)
+			assert.Equal(t, 1, len(form.Roles.Errors))
+			assert.Equal(t, validatorErrorRequired, form.Roles.Errors[0])
+		},
+	)
 }

@@ -27,43 +27,43 @@ Creates new form builder, which accept field builders
 New(fields...)
 ```
 
-### FormBuilder - Action()
+### Builder - Action()
 Set form action
 ```go
 formBuilder.Action(action)
 ```
 
-### FormBuilder - Add()
+### Builder - Add()
 Same as Add() function, only alternative
 ```go
 formBuilder.Add(name)
 ```
 
-### FormBuilder - Get()
+### Builder - Get()
 Get form field
 ```go
 formBuilder.Get(name)
 ```
 
-### FormBuilder - Limit()
+### Builder - Limit()
 Data limit (MBs)
 ```go
 formBuilder.Limit(limit)
 ```
 
-### FormBuilder - Method()
+### Builder - Method()
 Set form method
 ```go
 formBuilder.Method(method)
 ```
 
-### FormBuilder - Name()
+### Builder - Name()
 Set form name
 ```go
 formBuilder.Name(name)
 ```
 
-### FormBuilder - Request()
+### Builder - Request()
 Provide request to form, it uses native *http.Request
 ```go
 formBuilder.Request(request)

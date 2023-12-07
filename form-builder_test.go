@@ -41,8 +41,8 @@ func TestFormBuilder(t *testing.T) {
 				).Request(req),
 			)
 			assert.Nil(t, err)
-			assert.Equal(t, true, test.IsValid)
-			assert.Equal(t, true, test.IsSubmitted)
+			assert.Equal(t, true, test.Valid)
+			assert.Equal(t, true, test.Submitted)
 			assert.Equal(t, email, test.Email.Value)
 			assert.Equal(t, amount, test.Amount.Value)
 			assert.Equal(t, checked, test.Checked.Value)
@@ -73,8 +73,8 @@ func TestFormBuilder(t *testing.T) {
 				).Request(req),
 			)
 			assert.Nil(t, err)
-			assert.Equal(t, true, testForm.IsValid)
-			assert.Equal(t, true, testForm.IsSubmitted)
+			assert.Equal(t, true, testForm.Valid)
+			assert.Equal(t, true, testForm.Submitted)
 			assert.Equal(t, email, testForm.Email.Value)
 			assert.Equal(t, fileBytes, testForm.Test.Value.Bytes)
 		},

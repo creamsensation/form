@@ -29,7 +29,7 @@ func TestFieldBuilder(t *testing.T) {
 	t.Run(
 		"with validate ok", func(t *testing.T) {
 			f := Add("name").With(Text("abc"), Validate.Required())
-			f.valid = len(validateField(f)) == 0
+			f.valid = len(validateField(f, nil)) == 0
 			assert.Equal(t, true, f.valid)
 			assert.Equal(t, fieldTypeText, f.fieldType)
 			assert.Equal(t, fieldDataTypeString, f.dataType)
@@ -38,7 +38,7 @@ func TestFieldBuilder(t *testing.T) {
 	t.Run(
 		"with validate fail", func(t *testing.T) {
 			f := Add("name").With(Text("abc"), Validate.Min(4))
-			f.valid = len(validateField(f)) == 0
+			f.valid = len(validateField(f, nil)) == 0
 			assert.Equal(t, false, f.valid)
 			assert.Equal(t, fieldTypeText, f.fieldType)
 			assert.Equal(t, fieldDataTypeString, f.dataType)

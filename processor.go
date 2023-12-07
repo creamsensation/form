@@ -24,7 +24,7 @@ func processRequest(req *http.Request, limit int) (url.Values, map[string][]*mul
 	return req.Form, make(map[string][]*multipart.FileHeader), nil
 }
 
-func processFormData(form *FormBuilder, data url.Values) {
+func processFormData(form *Builder, data url.Values) {
 	for i, field := range form.fields {
 		for name, item := range data {
 			if len(item) == 0 || name != field.name {
@@ -76,7 +76,7 @@ func processFormData(form *FormBuilder, data url.Values) {
 	}
 }
 
-func processFormFiles(form *FormBuilder, multipartFiles map[string][]*multipart.FileHeader) error {
+func processFormFiles(form *Builder, multipartFiles map[string][]*multipart.FileHeader) error {
 	requestFiles := make([]Multipart, 0)
 	for key, files := range multipartFiles {
 		for _, file := range files {
@@ -84,7 +84,7 @@ func processFormFiles(form *FormBuilder, multipartFiles map[string][]*multipart.
 			if err != nil {
 				return fmt.Errorf("error while opening multipart file: %w", err)
 			}
-			fileBytes, err := io.ReadAll(f)
+			data, err := io.ReadAll(f)
 			if err != nil {
 				return fmt.Errorf("error while reading multipart file: %w", err)
 			}
@@ -92,9 +92,9 @@ func processFormFiles(form *FormBuilder, multipartFiles map[string][]*multipart.
 				requestFiles, Multipart{
 					Key:    key,
 					Name:   file.Filename,
-					Type:   http.DetectContentType(fileBytes),
+					Type:   http.DetectContentType(data),
 					Suffix: getFileSuffixFromName(file.Filename),
-					Bytes:  fileBytes,
+					Data:   data,
 				},
 			)
 		}

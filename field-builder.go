@@ -13,6 +13,7 @@ type FieldBuilder struct {
 	multiple       bool
 	valid          bool
 	name           string
+	label          string
 	value          any
 	validators     []validator
 	validatorError validatorError
@@ -62,6 +63,11 @@ func Add(name string) *FieldBuilder {
 	}
 }
 
+func (b *FieldBuilder) Label(label string) *FieldBuilder {
+	b.label = label
+	return b
+}
+
 func (b *FieldBuilder) With(config FieldConfig, validators ...Validator) *FieldBuilder {
 	switch config.value.(type) {
 	case []string:
@@ -81,6 +87,15 @@ func (b *FieldBuilder) With(config FieldConfig, validators ...Validator) *FieldB
 		b.validators = append(b.validators, v.(validator))
 	}
 	return b
+}
+
+func (b *FieldBuilder) isRequired() bool {
+	for _, v := range b.validators {
+		if v.validatorType == validatorTypeRequired {
+			return true
+		}
+	}
+	return false
 }
 
 func Button(value ...string) FieldConfig {
@@ -288,7 +303,9 @@ func Week(value ...string) FieldConfig {
 func createFieldType[T any](b *FieldBuilder, fieldType, dataType string, values ...T) {
 	b.fieldType = fieldType
 	b.dataType = dataType
-	b.multiple = len(values) > 1
+	if !b.multiple {
+		b.multiple = len(values) > 1
+	}
 	if b.multiple {
 		b.value = values
 	}

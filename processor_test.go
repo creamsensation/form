@@ -25,6 +25,7 @@ func TestProcessor(t *testing.T) {
 			req := testCreateFormRequest()
 			form, err := Build[testForm](
 				New(
+					Add("roles").Multiple().With(Text()),
 					Add("name").With(Text()),
 					Add("quantity").With(Number[int]()),
 					Add("amount").With(Number[float64]()),
@@ -32,6 +33,7 @@ func TestProcessor(t *testing.T) {
 				).Request(req),
 			)
 			assert.Nil(t, err)
+			assert.Equal(t, []string{testRole}, form.Roles.Value)
 			assert.Equal(t, testNameValue, form.Name.Value)
 			assert.Equal(t, testQuantityValue, form.Quantity.Value)
 			assert.Equal(t, testAmountValue, form.Amount.Value)
