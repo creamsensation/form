@@ -16,7 +16,7 @@ type FieldBuilder struct {
 	label          string
 	value          any
 	validators     []validator
-	validatorError validatorError
+	validatorError map[string]error
 }
 
 type FieldConfig struct {

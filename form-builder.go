@@ -15,7 +15,7 @@ type Builder struct {
 	submitted      bool
 	hx             bool
 	security       security
-	validatorError validatorError
+	validatorError map[string]error
 }
 
 const (
@@ -47,6 +47,11 @@ func (b *Builder) Csrf(name, token string) *Builder {
 		Name:    name,
 		Token:   token,
 	}
+	return b
+}
+
+func (b *Builder) Errors(errors map[string]error) *Builder {
+	b.validatorError = errors
 	return b
 }
 

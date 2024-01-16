@@ -2,15 +2,15 @@ package form
 
 import "errors"
 
-type validatorError struct {
-	required  error
-	stringMin error
-	stringMax error
-	numberMin error
-	numberMax error
-	email     error
-	invalid   error
-}
+const (
+	ErrorRequired  = "required"
+	ErrorStringMin = "stringMin"
+	ErrorStringMax = "stringMax"
+	ErrorNumberMin = "numberMin"
+	ErrorNumberMax = "numberMax"
+	ErrorEmail     = "email"
+	ErrorInvalid   = "invalid"
+)
 
 var (
 	validatorErrorRequired  = errors.New("field is required")
@@ -22,14 +22,14 @@ var (
 	validatorErrorInvalid   = errors.New("field is invalid")
 )
 
-func createDefaultErrors() validatorError {
-	return validatorError{
-		required:  validatorErrorRequired,
-		stringMin: validatorErrorStringMin,
-		stringMax: validatorErrorStringMax,
-		numberMin: validatorErrorNumberMin,
-		numberMax: validatorErrorNumberMax,
-		email:     validatorErrorEmail,
-		invalid:   validatorErrorInvalid,
+func createDefaultErrors() map[string]error {
+	return map[string]error{
+		ErrorRequired:  validatorErrorRequired,
+		ErrorStringMin: validatorErrorStringMin,
+		ErrorStringMax: validatorErrorStringMax,
+		ErrorNumberMin: validatorErrorNumberMin,
+		ErrorNumberMax: validatorErrorNumberMax,
+		ErrorEmail:     validatorErrorEmail,
+		ErrorInvalid:   validatorErrorInvalid,
 	}
 }

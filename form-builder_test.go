@@ -76,7 +76,7 @@ func TestFormBuilder(t *testing.T) {
 			assert.Equal(t, true, testForm.Valid)
 			assert.Equal(t, true, testForm.Submitted)
 			assert.Equal(t, email, testForm.Email.Value)
-			assert.Equal(t, fileBytes, testForm.Test.Value.Bytes)
+			assert.Equal(t, fileBytes, testForm.Test.Value.Data)
 		},
 	)
 }

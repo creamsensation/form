@@ -49,7 +49,7 @@ func TestProcessor(t *testing.T) {
 					Request(req),
 			)
 			assert.Nil(t, err)
-			assert.Equal(t, fileBytes, form.Test.Value.Bytes)
+			assert.Equal(t, fileBytes, form.Test.Value.Data)
 		},
 	)
 	t.Run(

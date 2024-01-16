@@ -98,72 +98,72 @@ func validateRequired(fb *FieldBuilder) []error {
 	
 	case []string:
 		if len(fv) == 0 {
-			errors = append(errors, fb.validatorError.required)
+			errors = append(errors, fb.validatorError[ErrorRequired])
 		}
 		if len(fv) > 0 {
 			for _, item := range fv {
 				if len(item) == 0 {
-					errors = append(errors, fb.validatorError.required)
+					errors = append(errors, fb.validatorError[ErrorRequired])
 					break
 				}
 			}
 		}
 	case []int:
 		if len(fv) == 0 {
-			errors = append(errors, fb.validatorError.required)
+			errors = append(errors, fb.validatorError[ErrorRequired])
 		}
 		if len(fv) > 0 {
 			for _, item := range fv {
 				if item < 1 {
-					errors = append(errors, fb.validatorError.required)
+					errors = append(errors, fb.validatorError[ErrorRequired])
 					break
 				}
 			}
 		}
 	case []float64:
 		if len(fv) == 0 {
-			errors = append(errors, fb.validatorError.required)
+			errors = append(errors, fb.validatorError[ErrorRequired])
 		}
 		if len(fv) > 0 {
 			for _, item := range fv {
 				if item < 0.01 {
-					errors = append(errors, fb.validatorError.required)
+					errors = append(errors, fb.validatorError[ErrorRequired])
 					break
 				}
 			}
 		}
 	case []float32:
 		if len(fv) == 0 {
-			errors = append(errors, fb.validatorError.required)
+			errors = append(errors, fb.validatorError[ErrorRequired])
 		}
 		if len(fv) > 0 {
 			for _, item := range fv {
 				if item < 0.01 {
-					errors = append(errors, fb.validatorError.required)
+					errors = append(errors, fb.validatorError[ErrorRequired])
 					break
 				}
 			}
 		}
 	case []bool:
 		if len(fv) == 0 {
-			errors = append(errors, fb.validatorError.required)
+			errors = append(errors, fb.validatorError[ErrorRequired])
 		}
 		if len(fv) > 0 {
 			for _, item := range fv {
 				if !item {
-					errors = append(errors, fb.validatorError.required)
+					errors = append(errors, fb.validatorError[ErrorRequired])
 					break
 				}
 			}
 		}
 	case []Multipart:
 		if len(fv) == 0 {
-			errors = append(errors, fb.validatorError.required)
+			errors = append(errors, fb.validatorError[ErrorRequired])
 		}
 		if len(fv) > 0 {
 			for _, item := range fv {
 				if len(item.Data) == 0 {
-					errors = append(errors, fb.validatorError.required)
+					errors = append(errors, fb.validatorError[ErrorRequired])
 					break
 				}
 			}
@@ -171,28 +171,28 @@ func validateRequired(fb *FieldBuilder) []error {
 	
 	case string:
 		if len(fv) == 0 {
-			errors = append(errors, fb.validatorError.required)
+			errors = append(errors, fb.validatorError[ErrorRequired])
 		}
 	case int:
 		if fv < 1 {
-			errors = append(errors, fb.validatorError.required)
+			errors = append(errors, fb.validatorError[ErrorRequired])
 		}
 	case float64:
 		if fv < 0.01 {
-			errors = append(errors, fb.validatorError.required)
+			errors = append(errors, fb.validatorError[ErrorRequired])
 		}
 	case float32:
 		if fv < 0.01 {
-			errors = append(errors, fb.validatorError.required)
+			errors = append(errors, fb.validatorError[ErrorRequired])
 		}
 	case bool:
 		if !fv {
-			errors = append(errors, fb.validatorError.required)
+			errors = append(errors, fb.validatorError[ErrorRequired])
 		}
 	
 	case Multipart:
 		if len(fv.Data) == 0 {
-			errors = append(errors, fb.validatorError.required)
+			errors = append(errors, fb.validatorError[ErrorRequired])
 		}
 	}
 	return errors
@@ -205,47 +205,47 @@ func validateMin(fb *FieldBuilder, v validator) []error {
 	case []string:
 		for _, item := range fv {
 			if len(item) < vv {
-				errors = append(errors, fb.validatorError.stringMin)
+				errors = append(errors, fb.validatorError[ErrorStringMin])
 				break
 			}
 		}
 	case []int:
 		for _, item := range fv {
 			if item < vv {
-				errors = append(errors, fb.validatorError.numberMin)
+				errors = append(errors, fb.validatorError[ErrorNumberMin])
 				break
 			}
 		}
 	case []float32:
 		for _, item := range fv {
 			if item < float32(vv) {
-				errors = append(errors, fb.validatorError.numberMin)
+				errors = append(errors, fb.validatorError[ErrorNumberMin])
 				break
 			}
 		}
 	case []float64:
 		for _, item := range fv {
 			if item < float64(vv) {
-				errors = append(errors, fb.validatorError.numberMin)
+				errors = append(errors, fb.validatorError[ErrorNumberMin])
 				break
 			}
 		}
 	
 	case string:
 		if len(fv) < vv {
-			errors = append(errors, fb.validatorError.stringMin)
+			errors = append(errors, fb.validatorError[ErrorStringMin])
 		}
 	case int:
 		if fv < vv {
-			errors = append(errors, fb.validatorError.numberMin)
+			errors = append(errors, fb.validatorError[ErrorNumberMin])
 		}
 	case float32:
 		if fv < float32(vv) {
-			errors = append(errors, fb.validatorError.numberMin)
+			errors = append(errors, fb.validatorError[ErrorNumberMin])
 		}
 	case float64:
 		if fv < float64(vv) {
-			errors = append(errors, fb.validatorError.numberMin)
+			errors = append(errors, fb.validatorError[ErrorNumberMin])
 		}
 	}
 	return errors
@@ -258,47 +258,47 @@ func validateMax(fb *FieldBuilder, v validator) []error {
 	case []string:
 		for _, item := range fv {
 			if len(item) > vv {
-				errors = append(errors, fb.validatorError.stringMax)
+				errors = append(errors, fb.validatorError[ErrorStringMax])
 				break
 			}
 		}
 	case []int:
 		for _, item := range fv {
 			if item > vv {
-				errors = append(errors, fb.validatorError.numberMax)
+				errors = append(errors, fb.validatorError[ErrorNumberMax])
 				break
 			}
 		}
 	case []float32:
 		for _, item := range fv {
 			if item > float32(vv) {
-				errors = append(errors, fb.validatorError.numberMax)
+				errors = append(errors, fb.validatorError[ErrorNumberMax])
 				break
 			}
 		}
 	case []float64:
 		for _, item := range fv {
 			if item > float64(vv) {
-				errors = append(errors, fb.validatorError.numberMax)
+				errors = append(errors, fb.validatorError[ErrorNumberMax])
 				break
 			}
 		}
 	
 	case string:
 		if len(fv) > vv {
-			errors = append(errors, fb.validatorError.stringMax)
+			errors = append(errors, fb.validatorError[ErrorStringMax])
 		}
 	case int:
 		if fv > vv {
-			errors = append(errors, fb.validatorError.numberMax)
+			errors = append(errors, fb.validatorError[ErrorNumberMax])
 		}
 	case float32:
 		if fv > float32(vv) {
-			errors = append(errors, fb.validatorError.numberMax)
+			errors = append(errors, fb.validatorError[ErrorNumberMax])
 		}
 	case float64:
 		if fv > float64(vv) {
-			errors = append(errors, fb.validatorError.numberMax)
+			errors = append(errors, fb.validatorError[ErrorNumberMax])
 		}
 	}
 	return errors
@@ -314,7 +314,7 @@ func validateEmail(fb *FieldBuilder, v validator) []error {
 				errors = append(errors, err)
 			}
 			if !ok {
-				errors = append(errors, fb.validatorError.email)
+				errors = append(errors, fb.validatorError[ErrorEmail])
 			}
 		}
 	case string:
@@ -324,7 +324,7 @@ func validateEmail(fb *FieldBuilder, v validator) []error {
 				errors = append(errors, err)
 			}
 			if !ok {
-				errors = append(errors, fb.validatorError.email)
+				errors = append(errors, fb.validatorError[ErrorEmail])
 			}
 		}
 	}
@@ -341,7 +341,7 @@ func validateCustom(fb *FieldBuilder, v validator) []error {
 				errors = append(errors, err)
 			}
 			if !ok {
-				errors = append(errors, fb.validatorError.invalid)
+				errors = append(errors, fb.validatorError[ErrorInvalid])
 			}
 		}
 	case string:
@@ -351,7 +351,7 @@ func validateCustom(fb *FieldBuilder, v validator) []error {
 				errors = append(errors, err)
 			}
 			if !ok {
-				errors = append(errors, fb.validatorError.invalid)
+				errors = append(errors, fb.validatorError[ErrorInvalid])
 			}
 		}
 	}
