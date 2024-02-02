@@ -2,7 +2,8 @@ package form
 
 import (
 	"fmt"
-	
+	"time"
+
 	"golang.org/x/exp/constraints"
 )
 
@@ -10,10 +11,14 @@ type FieldBuilder struct {
 	dataType       string
 	fieldType      string
 	id             string
+	autofocus      bool
+	disabled       bool
 	multiple       bool
 	valid          bool
 	name           string
 	label          string
+	text           string
+	size           int
 	value          any
 	validators     []validator
 	validatorError map[string]error
@@ -48,12 +53,15 @@ const (
 	fieldTypeTime          = "time"
 	fieldTypeUrl           = "url"
 	fieldTypeWeek          = "week"
-	
+
 	fieldDataTypeBool   = "bool"
 	fieldDataTypeFile   = "file"
 	fieldDataTypeFloat  = "float"
 	fieldDataTypeInt    = "int"
 	fieldDataTypeString = "string"
+	fieldDataTypeTime   = "time"
+
+	fieldTimeFormat = "2006-01-02 15:04:05.999999999 +0000 UTC"
 )
 
 func Add(name string) *FieldBuilder {
@@ -68,8 +76,33 @@ func (b *FieldBuilder) Label(label string) *FieldBuilder {
 	return b
 }
 
+func (b *FieldBuilder) Autofocus(autofocus ...bool) *FieldBuilder {
+	af := true
+	if len(autofocus) > 0 {
+		af = autofocus[0]
+	}
+	b.autofocus = af
+	return b
+}
+
+func (b *FieldBuilder) Disabled(disabled ...bool) *FieldBuilder {
+	d := true
+	if len(disabled) > 0 {
+		d = disabled[0]
+	}
+	b.disabled = d
+	return b
+}
+
+func (b *FieldBuilder) Text(text any) *FieldBuilder {
+	b.text = fmt.Sprintf("%v", text)
+	return b
+}
+
 func (b *FieldBuilder) With(config FieldConfig, validators ...Validator) *FieldBuilder {
 	switch config.value.(type) {
+	case []any:
+		createFieldType[any](b, config.fieldType, config.dataType, config.value.([]any)...)
 	case []string:
 		createFieldType[string](b, config.fieldType, config.dataType, config.value.([]string)...)
 	case []int:
@@ -82,6 +115,8 @@ func (b *FieldBuilder) With(config FieldConfig, validators ...Validator) *FieldB
 		createFieldType[bool](b, config.fieldType, config.dataType, config.value.([]bool)...)
 	case []Multipart:
 		createFieldType[Multipart](b, config.fieldType, config.dataType, config.value.([]Multipart)...)
+	case []time.Time:
+		createFieldType[time.Time](b, config.fieldType, config.dataType, config.value.([]time.Time)...)
 	}
 	for _, v := range validators {
 		b.validators = append(b.validators, v.(validator))
@@ -154,15 +189,24 @@ func File(value ...Multipart) FieldConfig {
 	}
 }
 
-func Hidden(value ...any) FieldConfig {
+func Hidden[T comparable](value ...any) FieldConfig {
+	var dataType string
+	switch any(*new(T)).(type) {
+	case float32, float64:
+		dataType = fieldDataTypeFloat
+	case int:
+		dataType = fieldDataTypeInt
+	case string:
+		dataType = fieldDataTypeString
+	case bool:
+		dataType = fieldDataTypeBool
+	case time.Time:
+		dataType = fieldDataTypeTime
+	}
 	return FieldConfig{
 		fieldType: fieldTypeHidden,
-		dataType:  fieldDataTypeString,
-		value: convertSlice[any, string](
-			value, func(v any) string {
-				return fmt.Sprintf("%v", v)
-			},
-		),
+		dataType:  dataType,
+		value:     value,
 	}
 }
 
@@ -187,10 +231,10 @@ func Month(value ...string) FieldConfig {
 	}
 }
 
-func (b *FieldBuilder) Multiple(multiple ...bool) *FieldBuilder {
+func (b *FieldBuilder) Multiple(size ...int) *FieldBuilder {
 	b.multiple = true
-	if len(multiple) > 0 {
-		b.multiple = multiple[0]
+	if len(size) > 0 {
+		b.size = size[0]
 	}
 	return b
 }
@@ -276,10 +320,10 @@ func Text(value ...string) FieldConfig {
 	}
 }
 
-func Time(value ...string) FieldConfig {
+func Time(value ...time.Time) FieldConfig {
 	return FieldConfig{
 		fieldType: fieldTypeTime,
-		dataType:  fieldDataTypeString,
+		dataType:  fieldDataTypeTime,
 		value:     value,
 	}
 }

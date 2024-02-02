@@ -6,6 +6,7 @@ import (
 	"mime/multipart"
 	"net/http"
 	"net/url"
+	"time"
 )
 
 const (
@@ -26,6 +27,13 @@ func processRequest(req *http.Request, limit int) (url.Values, map[string][]*mul
 
 func processFormData(form *Builder, data url.Values) {
 	for i, field := range form.fields {
+		switch field.dataType {
+		case fieldDataTypeBool:
+			if !field.multiple {
+				form.fields[i].value = data.Get(field.name) == "on"
+			}
+			continue
+		}
 		for name, item := range data {
 			if len(item) == 0 || name != field.name {
 				continue
@@ -60,14 +68,16 @@ func processFormData(form *Builder, data url.Values) {
 						},
 					)
 				}
-			case fieldDataTypeBool:
+			case fieldDataTypeTime:
 				if !field.multiple {
-					form.fields[i].value = item[0] == "true"
+					t, _ := time.Parse(fieldTimeFormat, item[0])
+					form.fields[i].value = t
 				}
 				if field.multiple {
-					form.fields[i].value = convertSlice[string, bool](
-						item, func(v string) bool {
-							return v == "true"
+					form.fields[i].value = convertSlice[string, time.Time](
+						item, func(v string) time.Time {
+							t, _ := time.Parse(fieldTimeFormat, v)
+							return t
 						},
 					)
 				}

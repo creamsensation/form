@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"net/http"
 	"reflect"
-	
+	"time"
+
 	"github.com/iancoleman/strcase"
 )
 
@@ -125,6 +126,17 @@ func buildFormField(formRef reflect.Value, fb *FieldBuilder, req *http.Request) 
 			formField.Set(reflect.ValueOf(field))
 			return field.Errors
 		}
+	case fieldDataTypeTime:
+		if fb.multiple {
+			field := createFormField[[]time.Time](fb, req)
+			formField.Set(reflect.ValueOf(field))
+			return field.Errors
+		}
+		if !fb.multiple {
+			field := createFormField[time.Time](fb, req)
+			formField.Set(reflect.ValueOf(field))
+			return field.Errors
+		}
 	}
 	return errors
 }
@@ -154,14 +166,17 @@ func createBaseForm(b *Builder) Form {
 
 func createFormField[T any](fb *FieldBuilder, req *http.Request) Field[T] {
 	return Field[T]{
-		Id:       fb.id,
-		Name:     fb.name,
-		Type:     fb.fieldType,
-		DataType: fb.dataType,
-		Label:    fb.label,
-		Value:    fb.value.(T),
-		Multiple: fb.multiple,
-		Errors:   validateField(fb, req),
-		Required: fb.isRequired(),
+		Id:        fb.id,
+		Name:      fb.name,
+		Type:      fb.fieldType,
+		DataType:  fb.dataType,
+		Label:     fb.label,
+		Text:      fb.text,
+		Value:     fb.value.(T),
+		Multiple:  fb.multiple,
+		Errors:    validateField(fb, req),
+		Required:  fb.isRequired(),
+		Disabled:  fb.disabled,
+		Autofocus: fb.autofocus,
 	}
 }
