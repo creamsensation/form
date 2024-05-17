@@ -30,7 +30,7 @@ func TestFormBuilder(t *testing.T) {
 			req := httptest.NewRequest(
 				http.MethodPost,
 				"/test",
-				strings.NewReader(fmt.Sprintf("email=%s&quantity=%d&amount=%.2f&checked=%t", email, quantity, amount, checked)),
+				strings.NewReader(fmt.Sprintf("email=%s&quantity=%d&amount=%.2f&checked=on", email, quantity, amount)),
 			)
 			req.Header.Set(contentType, contentTypeForm)
 			test, err := Build[testForm](

@@ -17,9 +17,9 @@ func TestValidator(t *testing.T) {
 				),
 			)
 			assert.Nil(t, err)
-			assert.Equal(t, validatorErrorRequired, form.Email.Errors[0])
-			assert.Equal(t, validatorErrorRequired, form.Quantity.Errors[0])
-			assert.Equal(t, validatorErrorRequired, form.Amount.Errors[0])
+			assert.Equal(t, defaultRequiredMessage, form.Email.Messages[0])
+			assert.Equal(t, defaultRequiredMessage, form.Quantity.Messages[0])
+			assert.Equal(t, defaultRequiredMessage, form.Amount.Messages[0])
 		},
 	)
 	t.Run(
@@ -30,7 +30,7 @@ func TestValidator(t *testing.T) {
 				),
 			)
 			assert.Nil(t, err)
-			assert.Equal(t, 0, len(form.Email.Errors))
+			assert.Equal(t, 0, len(form.Email.Messages))
 		},
 	)
 	t.Run(
@@ -41,7 +41,7 @@ func TestValidator(t *testing.T) {
 				),
 			)
 			assert.Nil(t, err)
-			assert.Equal(t, validatorErrorEmail, form.Email.Errors[0])
+			assert.Equal(t, defaultEmailMessage, form.Email.Messages[0])
 		},
 	)
 	t.Run(
@@ -52,7 +52,7 @@ func TestValidator(t *testing.T) {
 				),
 			)
 			assert.Nil(t, err)
-			assert.Equal(t, validatorErrorStringMin, form.Email.Errors[0])
+			assert.Equal(t, defaultMinTextMessage, form.Email.Messages[0])
 		},
 	)
 	t.Run(
@@ -63,7 +63,7 @@ func TestValidator(t *testing.T) {
 				),
 			)
 			assert.Nil(t, err)
-			assert.Equal(t, validatorErrorStringMax, form.Email.Errors[0])
+			assert.Equal(t, defaultMaxTextMessage, form.Email.Messages[0])
 		},
 	)
 	t.Run(
@@ -74,8 +74,8 @@ func TestValidator(t *testing.T) {
 				),
 			)
 			assert.Nil(t, err)
-			assert.Equal(t, 1, len(form.Roles.Errors))
-			assert.Equal(t, validatorErrorRequired, form.Roles.Errors[0])
+			assert.Equal(t, 1, len(form.Roles.Messages))
+			assert.Equal(t, defaultRequiredMessage, form.Roles.Messages[0])
 		},
 	)
 }

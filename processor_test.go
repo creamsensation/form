@@ -17,7 +17,7 @@ func TestProcessor(t *testing.T) {
 			assert.Equal(t, testNameValue, formData.Get("name"))
 			assert.Equal(t, testQuantityValue, convertToInt(formData.Get("quantity")))
 			assert.Equal(t, testAmountValue, convertToFloat(formData.Get("amount")))
-			assert.Equal(t, testCheckedValue, formData.Get("checked") == "true")
+			assert.Equal(t, testCheckedValue, formData.Get("checked") == "on")
 		},
 	)
 	t.Run(

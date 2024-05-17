@@ -3,25 +3,25 @@ package form
 import (
 	"fmt"
 	"time"
-
+	
 	"golang.org/x/exp/constraints"
 )
 
 type FieldBuilder struct {
-	dataType       string
-	fieldType      string
-	id             string
-	autofocus      bool
-	disabled       bool
-	multiple       bool
-	valid          bool
-	name           string
-	label          string
-	text           string
-	size           int
-	value          any
-	validators     []validator
-	validatorError map[string]error
+	dataType   string
+	fieldType  string
+	id         string
+	autofocus  bool
+	disabled   bool
+	multiple   bool
+	valid      bool
+	name       string
+	label      string
+	text       string
+	size       int
+	value      any
+	validators []validator
+	messages   Messages
 }
 
 type FieldConfig struct {
@@ -53,14 +53,14 @@ const (
 	fieldTypeTime          = "time"
 	fieldTypeUrl           = "url"
 	fieldTypeWeek          = "week"
-
+	
 	fieldDataTypeBool   = "bool"
 	fieldDataTypeFile   = "file"
 	fieldDataTypeFloat  = "float"
 	fieldDataTypeInt    = "int"
 	fieldDataTypeString = "string"
 	fieldDataTypeTime   = "time"
-
+	
 	fieldTimeFormat = "2006-01-02 15:04:05.999999999 +0000 UTC"
 )
 
@@ -189,7 +189,7 @@ func File(value ...Multipart) FieldConfig {
 	}
 }
 
-func Hidden[T comparable](value ...any) FieldConfig {
+func Hidden[T comparable](value ...T) FieldConfig {
 	var dataType string
 	switch any(*new(T)).(type) {
 	case float32, float64:

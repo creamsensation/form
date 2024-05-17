@@ -8,7 +8,7 @@ type Field[T any] struct {
 	Label     string
 	Text      string
 	Value     T
-	Errors    []error
+	Messages  []string
 	Autofocus bool
 	Disabled  bool
 	Required  bool

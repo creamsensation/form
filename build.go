@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"reflect"
 	"time"
-
+	
 	"github.com/iancoleman/strcase"
 )
 
@@ -56,7 +56,7 @@ func buildForm[T any](b *Builder) T {
 	form := new(T)
 	formRef := reflect.ValueOf(form)
 	for i, fb := range b.fields {
-		fb.validatorError = b.validatorError
+		fb.messages = b.messages
 		errors := buildFormField(formRef, fb, b.request)
 		b.fields[i].valid = len(errors) == 0
 	}
@@ -64,8 +64,8 @@ func buildForm[T any](b *Builder) T {
 	return *form
 }
 
-func buildFormField(formRef reflect.Value, fb *FieldBuilder, req *http.Request) []error {
-	errors := make([]error, 0)
+func buildFormField(formRef reflect.Value, fb *FieldBuilder, req *http.Request) []string {
+	errors := make([]string, 0)
 	formField := formRef.Elem().FieldByName(strcase.ToCamel(fb.name))
 	if !formField.IsValid() {
 		return errors
@@ -75,67 +75,67 @@ func buildFormField(formRef reflect.Value, fb *FieldBuilder, req *http.Request) 
 		if fb.multiple {
 			field := createFormField[[]string](fb, req)
 			formField.Set(reflect.ValueOf(field))
-			return field.Errors
+			return field.Messages
 		}
 		if !fb.multiple {
 			field := createFormField[string](fb, req)
 			formField.Set(reflect.ValueOf(field))
-			return field.Errors
+			return field.Messages
 		}
 	case fieldDataTypeFloat:
 		if fb.multiple {
 			field := createFormField[[]float64](fb, req)
 			formField.Set(reflect.ValueOf(field))
-			return field.Errors
+			return field.Messages
 		}
 		if !fb.multiple {
 			field := createFormField[float64](fb, req)
 			formField.Set(reflect.ValueOf(field))
-			return field.Errors
+			return field.Messages
 		}
 	case fieldDataTypeInt:
 		if fb.multiple {
 			field := createFormField[[]int](fb, req)
 			formField.Set(reflect.ValueOf(field))
-			return field.Errors
+			return field.Messages
 		}
 		if !fb.multiple {
 			field := createFormField[int](fb, req)
 			formField.Set(reflect.ValueOf(field))
-			return field.Errors
+			return field.Messages
 		}
 	case fieldDataTypeBool:
 		if fb.multiple {
 			field := createFormField[[]bool](fb, req)
 			formField.Set(reflect.ValueOf(field))
-			return field.Errors
+			return field.Messages
 		}
 		if !fb.multiple {
 			field := createFormField[bool](fb, req)
 			formField.Set(reflect.ValueOf(field))
-			return field.Errors
+			return field.Messages
 		}
 	case fieldDataTypeFile:
 		if fb.multiple {
 			field := createFormField[[]Multipart](fb, req)
 			formField.Set(reflect.ValueOf(field))
-			return field.Errors
+			return field.Messages
 		}
 		if !fb.multiple {
 			field := createFormField[Multipart](fb, req)
 			formField.Set(reflect.ValueOf(field))
-			return field.Errors
+			return field.Messages
 		}
 	case fieldDataTypeTime:
 		if fb.multiple {
 			field := createFormField[[]time.Time](fb, req)
 			formField.Set(reflect.ValueOf(field))
-			return field.Errors
+			return field.Messages
 		}
 		if !fb.multiple {
 			field := createFormField[time.Time](fb, req)
 			formField.Set(reflect.ValueOf(field))
-			return field.Errors
+			return field.Messages
 		}
 	}
 	return errors
@@ -174,7 +174,7 @@ func createFormField[T any](fb *FieldBuilder, req *http.Request) Field[T] {
 		Text:      fb.text,
 		Value:     fb.value.(T),
 		Multiple:  fb.multiple,
-		Errors:    validateField(fb, req),
+		Messages:  validateField(fb, req),
 		Required:  fb.isRequired(),
 		Disabled:  fb.disabled,
 		Autofocus: fb.autofocus,

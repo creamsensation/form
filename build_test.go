@@ -90,15 +90,15 @@ func TestFormFieldBuild(t *testing.T) {
 		"create form field", func(t *testing.T) {
 			fb := Add("name").With(Text(testNameValue))
 			f := createFormField[string](fb, nil)
-			f.Errors = validateField(fb, nil)
-			fb.valid = len(f.Errors) == 0
+			f.Messages = validateField(fb, nil)
+			fb.valid = len(f.Messages) == 0
 			assert.Equal(t, f.Type, fb.fieldType)
 			assert.Equal(t, f.Value, fb.value)
 			assert.Equal(t, f.Id, fb.id)
 			assert.Equal(t, f.Name, fb.name)
 			assert.Equal(t, f.Multiple, fb.multiple)
 			assert.Equal(t, true, fb.valid)
-			assert.Equal(t, 0, len(f.Errors))
+			assert.Equal(t, 0, len(f.Messages))
 		},
 	)
 }

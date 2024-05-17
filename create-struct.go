@@ -8,7 +8,7 @@ const (
 	valueFieldName = "Value"
 )
 
-func ToStruct[S, R any](src *S) R {
+func CreateStruct[S, R any](src *S) R {
 	result := new(R)
 	srcRef := reflect.ValueOf(src)
 	resultRef := reflect.ValueOf(result)

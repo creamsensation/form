@@ -113,8 +113,8 @@ Creates form from form builder, you have to provide result type
 Build[ExampleForm](formBuilder)
 ```
 
-## ToStruct()
+## CreateStruct()
 Convert form struct to any data model struct, you have to provide source and result type
 ```go
-ToStruct[ExampleForm, Model](&form)
+CreateStruct[ExampleForm, Model](&form)
 ```

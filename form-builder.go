@@ -5,17 +5,17 @@ import (
 )
 
 type Builder struct {
-	fields         []*FieldBuilder
-	request        *http.Request
-	method         string
-	action         string
-	name           string
-	contentType    string
-	limit          int
-	submitted      bool
-	hx             bool
-	security       security
-	validatorError map[string]error
+	fields      []*FieldBuilder
+	request     *http.Request
+	method      string
+	action      string
+	name        string
+	contentType string
+	limit       int
+	submitted   bool
+	hx          bool
+	security    security
+	messages    Messages
 }
 
 const (
@@ -24,9 +24,9 @@ const (
 
 func New(fields ...*FieldBuilder) *Builder {
 	return &Builder{
-		fields:         fields,
-		validatorError: createDefaultErrors(),
-		limit:          defaultBodyLimit,
+		fields:   fields,
+		limit:    defaultBodyLimit,
+		messages: defaultMessages,
 	}
 }
 
@@ -50,8 +50,31 @@ func (b *Builder) Csrf(name, token string) *Builder {
 	return b
 }
 
-func (b *Builder) Errors(errors map[string]error) *Builder {
-	b.validatorError = errors
+func (b *Builder) Messages(messages Messages) *Builder {
+	if len(messages.Invalid) > 0 {
+		b.messages.Invalid = messages.Invalid
+	}
+	if len(messages.MinText) > 0 {
+		b.messages.MinText = messages.MinText
+	}
+	if len(messages.MaxText) > 0 {
+		b.messages.MaxText = messages.MaxText
+	}
+	if len(messages.MinNumber) > 0 {
+		b.messages.MinNumber = messages.MinNumber
+	}
+	if len(messages.MaxNumber) > 0 {
+		b.messages.MaxNumber = messages.MaxNumber
+	}
+	if len(messages.Multipart) > 0 {
+		b.messages.Multipart = messages.Multipart
+	}
+	if len(messages.Required) > 0 {
+		b.messages.Required = messages.Required
+	}
+	if len(messages.Email) > 0 {
+		b.messages.Email = messages.Email
+	}
 	return b
 }
 

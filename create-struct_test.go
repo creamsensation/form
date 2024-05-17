@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestToStruct(t *testing.T) {
+func TestCreateStruct(t *testing.T) {
 	t.Run(
 		"convert", func(t *testing.T) {
 			form, err := Build[testForm](
@@ -18,7 +18,7 @@ func TestToStruct(t *testing.T) {
 				),
 			)
 			assert.Nil(t, err)
-			result := ToStruct[testForm, testModel](&form)
+			result := CreateStruct[testForm, testModel](&form)
 			assert.Equal(
 				t,
 				testModel{

@@ -54,8 +54,8 @@ func testCreateFormRequest() *http.Request {
 		"/test",
 		strings.NewReader(
 			fmt.Sprintf(
-				"name=%s&quantity=%d&amount=%.2f&checked=%t&roles=%s",
-				testNameValue, testQuantityValue, testAmountValue, testCheckedValue, testRole,
+				"name=%s&quantity=%d&amount=%.2f&checked=on&roles=%s",
+				testNameValue, testQuantityValue, testAmountValue, testRole,
 			),
 		),
 	)
